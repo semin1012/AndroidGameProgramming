@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:insetLeft="5sp"
             android:insetRight="5sp"
+            android:onClick="onButtonPrev"
             android:text="Prev" />
 
         <TextView
@@ -33,6 +34,7 @@
             android:layout_height="wrap_content"
             android:insetLeft="5sp"
             android:insetRight="5sp"
+            android:onClick="onButtonNext"
             android:text="Next" />
 
     </LinearLayout>
