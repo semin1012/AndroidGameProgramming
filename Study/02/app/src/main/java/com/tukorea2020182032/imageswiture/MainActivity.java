@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,8 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView mainImageView;
     private TextView pageTextView;
-    private Button prevButton;
-    private Button nextButton;
+    private ImageButton prevButton;
+    private ImageButton nextButton;
 
     int page = 1;
     private static final int[] IMG_RES_IDS = new int[]{

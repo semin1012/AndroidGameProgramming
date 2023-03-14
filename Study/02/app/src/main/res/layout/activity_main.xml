@@ -12,14 +12,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <ImageButton
+            android:background="@mipmap/prev"
             android:id="@+id/prevButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:insetLeft="5sp"
-            android:insetRight="5sp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:onClick="onButtonPrev"
-            android:text="Prev" />
+            />
 
         <TextView
             android:id="@+id/PageTextView"
@@ -31,14 +30,13 @@
             android:textSize="24sp"
             android:text=" 1 / 4 " />
 
-        <Button
+        <ImageButton
+            android:background="@mipmap/next"
             android:id="@+id/nextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:insetLeft="5sp"
-            android:insetRight="5sp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:onClick="onButtonNext"
-            android:text="Next" />
+            />
 
     </LinearLayout>
 
