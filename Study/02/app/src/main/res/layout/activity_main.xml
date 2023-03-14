@@ -21,13 +21,14 @@
             android:text="Prev" />
 
         <TextView
+            android:id="@+id/PageTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="right|center"
             android:gravity="center"
             android:textSize="24sp"
-            android:text=" 1 / 5 " />
+            android:text=" 1 / 6 " />
 
         <Button
             android:layout_width="wrap_content"
