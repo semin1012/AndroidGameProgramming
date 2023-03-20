@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.HashMap;
 
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private ImageButton previousButton;
+    private TextView scoreTextView;
+    private int Flips = 0;
     private static HashMap<Integer, Integer> idMap;
     // Hash 가 검색 성능이 좋다.
     static { // static 블럭은 이 클래스가 최초 로드되는 시점에 한 번 실행된다
@@ -38,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
             idMap.put(BUTTON_IDS[i], i);
         }
     }
+
+    private int flips;
+
     private static int getIndexWithId(int id) {
         Integer index = idMap.get(id);
         if (index == null) {
@@ -54,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        scoreTextView = findViewById(R.id.scoreTextView);
 
         for (int i = 0; i < BUTTON_IDS.length; i++) {
             ImageButton btn = findViewById(BUTTON_IDS[i]);
@@ -91,6 +99,12 @@ public class MainActivity extends AppCompatActivity {
                 previousButton.setImageResource(R.mipmap.card_blue_back);
             }
         }
+        setFlips(flips + 1);
         previousButton = btn;
+    }
+    
+    private void setFlips(int flips) {
+        this.flips = flips;
+        scoreTextView.setText("Flips: " + flips);
     }
 }
