@@ -1,14 +1,18 @@
 package com.tukorea2020182032.cardgame;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton previousButton;
     private TextView scoreTextView;
     private int Flips = 0;
+    private int openCardCount = 0;
     private static HashMap<Integer, Integer> idMap;
     // Hash 가 검색 성능이 좋다.
     static { // static 블럭은 이 클래스가 최초 로드되는 시점에 한 번 실행된다
@@ -63,9 +68,24 @@ public class MainActivity extends AppCompatActivity {
 
         scoreTextView = findViewById(R.id.scoreTextView);
 
+        startGame();
+    }
+
+    private void startGame() {
+        openCardCount = BUTTON_IDS.length;
+
+        Random  r = new Random();
+        for ( int i = 0; i < resIds.length; i++ ) {
+            int t = r.nextInt(resIds.length);
+            int id = resIds[t];
+            resIds[t] = resIds[i];
+            resIds[i] = id;
+        }
         for (int i = 0; i < BUTTON_IDS.length; i++) {
             ImageButton btn = findViewById(BUTTON_IDS[i]);
             btn.setTag(resIds[i]);
+            btn.setVisibility(View.VISIBLE);
+            btn.setImageResource(R.mipmap.card_blue_back);
         }
     }
 
@@ -78,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
 
         ImageButton btn = (ImageButton) view;
         if (btn == previousButton) {
-            // 같은 카드가 눌리면 무시한다
+            // 같은 카드가 눌리면 무시만 하지 말고 Toast 를 보여준다
+            Toast.makeText(this, R.string.same_card_toast, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -93,6 +114,10 @@ public class MainActivity extends AppCompatActivity {
                 // View.GONE 은 자리 차지도 안하게 되어서 정렬 위치가 달라짐
                 // View.INVISIBLE 은 자리 차지를 유지하면서 보이지만 않게 됨
                 previousButton = null;
+                openCardCount -= 2;
+                if ( openCardCount == 0 ) {
+                    askRetry();
+                }
                 return;
             } else {
                 // 이전의 카드는 뒷면이 보이도록 되돌려둔다
@@ -102,9 +127,30 @@ public class MainActivity extends AppCompatActivity {
         setFlips(flips + 1);
         previousButton = btn;
     }
+
+    public void onBtnRestart(View view) {
+        askRetry();
+    }
+
+    private void askRetry() {
+        new AlertDialog.Builder(this).setTitle(R.string.restart_dlg_title)
+                .setMessage(R.string.restart_dlg_msg)
+                .setPositiveButton(R.string.common_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d(TAG, "Restart Here");
+                        startGame();
+                    }
+                })
+                .setNegativeButton(R.string.common_no, null)
+                .create()
+                .show();
+    }
     
     private void setFlips(int flips) {
         this.flips = flips;
         scoreTextView.setText("Flips: " + flips);
+        String text = getString(R.string.score_flips_fmt, flips);
+        scoreTextView.setText(text);
     }
 }
