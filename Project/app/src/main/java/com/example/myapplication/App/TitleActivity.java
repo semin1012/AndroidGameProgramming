@@ -8,8 +8,6 @@ import android.view.animation.LinearInterpolator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import kr.ac.tukorea.ge.spgp2023.dragonflight.databinding.ActivityTitleBinding;
-
 public class TitleActivity extends AppCompatActivity {
 
     private static final String TAG = TitleActivity.class.getSimpleName();

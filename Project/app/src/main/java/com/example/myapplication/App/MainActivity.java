@@ -6,10 +6,6 @@ import android.os.Bundle;
 
 import com.example.myapplication.framework.view.GameView;
 
-import kr.ac.tukorea.ge.spgp2023.framework.scene.BaseScene;
-import kr.ac.tukorea.ge.spgp2023.framework.view.GameView;
-import kr.ac.tukorea.ge.spgp2023.dragonflight.game.MainScene;
-
 public class MainActivity extends AppCompatActivity {
 
     private GameView gameView;
@@ -21,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
         gameView.setFullScreen();
         setContentView(gameView);
 
-        new MainScene().pushScene();
     }
 
     @Override
@@ -38,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        BaseScene.popAll();
         super.onDestroy();
     }
 }
