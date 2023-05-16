@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
-import kr.ac.tukorea.ge.DontStop.cookierun.BuildConfig;
+import kr.ac.tukorea.ge.DontStop.DontStop.BuildConfig;
 import kr.ac.tukorea.ge.DontStop.framework.interfaces.IBoxCollidable;
 import kr.ac.tukorea.ge.DontStop.framework.interfaces.IGameObject;
 import kr.ac.tukorea.ge.DontStop.framework.interfaces.IRecyclable;

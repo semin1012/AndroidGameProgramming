@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'kr.ac.tukorea.ge.DontStop.cookierun'
+    namespace 'kr.ac.tukorea.ge.DontStop.DontStop'
     compileSdk 33
 
     defaultConfig {
-        applicationId "kr.ac.tukorea.ge.DontStop.cookierun"
+        applicationId "kr.ac.tukorea.ge.DontStop.DontStop"
         minSdk 22
         targetSdk 33
         versionCode 1

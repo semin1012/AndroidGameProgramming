@@ -10,7 +10,9 @@ import android.view.Choreographer;
 import android.view.MotionEvent;
 import android.view.View;
 
-import kr.ac.tukorea.ge.DontStop.cookierun.BuildConfig;
+import java.security.AccessController;
+
+import kr.ac.tukorea.ge.DontStop.DontStop.BuildConfig;
 import kr.ac.tukorea.ge.DontStop.framework.scene.BaseScene;
 
 /**
@@ -19,6 +21,7 @@ import kr.ac.tukorea.ge.DontStop.framework.scene.BaseScene;
 public class GameView extends View implements Choreographer.FrameCallback {
     private static final String TAG = GameView.class.getSimpleName();
     public static Resources res;
+    public static GameView view;
     //    private Ball ball1, ball2;
     protected Paint fpsPaint;
     protected Paint borderPaint;
@@ -38,10 +41,16 @@ public class GameView extends View implements Choreographer.FrameCallback {
         init(attrs, defStyle);
     }
 
+    public static void clear() {
+        view = null;
+        res = null;
+    }
+
     public void setFullScreen() {
         setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
     private void init(AttributeSet attrs, int defStyle) {
+        GameView.view = this;
         GameView.res = getResources();
 
         running = true;
