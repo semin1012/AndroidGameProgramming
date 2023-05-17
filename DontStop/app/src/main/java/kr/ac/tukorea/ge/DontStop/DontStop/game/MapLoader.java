@@ -33,9 +33,9 @@ public class MapLoader implements IGameObject {
             }
             for (int i = 0; i < count; i++) {
                 int y2 = y -= random.nextInt(2);
-                JellyItem jellyItem = JellyItem.get(JellyItem.getRandomIndex(random), itemX, y2);
-                scene.add(MainScene.Layer.item, jellyItem);
-                itemX += jellyItem.getWidth();
+                Coin coin = Coin.get(itemX, y2);
+                scene.add(MainScene.Layer.item, coin);
+                itemX += coin.getWidth();
             }
         }
     }

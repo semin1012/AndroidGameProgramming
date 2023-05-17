@@ -19,6 +19,8 @@ public class Player extends AnimSprite implements IBoxCollidable {
     private static final float GRAVITY = 17.0f;
     private RectF collisionRect = new RectF();
 
+    private int coinNum = 0;
+
     public Player() {
         super(R.mipmap.cookie002, 2.0f, 3.0f, 2.0f, 2.0f, 8, 1);
         fixCollisionRect();
@@ -155,6 +157,14 @@ public class Player extends AnimSprite implements IBoxCollidable {
         dstRect.offset(0, 0.001f);
         collisionRect.offset(0, 0.001f);
         jumpSpeed = 0;
+    }
+
+    public void SetCoinCount(int num) {
+        coinNum = num;
+    }
+
+    public int GetCoinCount() {
+        return coinNum;
     }
 
     @Override

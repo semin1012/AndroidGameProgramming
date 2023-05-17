@@ -26,7 +26,10 @@ public class CollisionChecker implements IGameObject {
                 continue;
             }
             if (CollisionHelper.collides(player, (IBoxCollidable) gobj)) {
-                scene.remove(MainScene.Layer.item, gobj);
+                if ( gobj.getClass() == Coin.class) {
+                    scene.remove(MainScene.Layer.item, gobj);
+
+                }
             }
         }
     }
