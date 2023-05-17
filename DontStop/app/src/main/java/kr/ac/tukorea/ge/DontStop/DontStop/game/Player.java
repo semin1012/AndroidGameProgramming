@@ -20,33 +20,35 @@ public class Player extends AnimSprite implements IBoxCollidable {
     private RectF collisionRect = new RectF();
 
     public Player() {
-        super(R.mipmap.cookie_player_sheet, 2.0f, 3.0f, 2.0f, 2.0f, 8, 1);
+        super(R.mipmap.cookie002, 2.0f, 3.0f, 2.0f, 2.0f, 8, 1);
         fixCollisionRect();
     }
 
     protected enum State {
-        running, jump, doubleJump, falling, COUNT
+        running, jump, doubleJump, falling, idle, COUNT
     }
 //    protected Rect[] srcRects
     protected static Rect[][] srcRects = {
-            makeRects(100, 101, 102, 103), // State.running
-            makeRects(7, 8),               // State.jump
-            makeRects(1, 2, 3, 4),         // State.doubleJump
-            makeRects(0),                  // State.falling
+            makeRects(100, 101, 102, 103),      // State.running
+            makeRects(1, 2),                    // State.jump
+            makeRects(1, 2, 3, 4, 5),           // State.doubleJump
+            makeRects(5),                       // State.falling
+            makeRects(300, 301, 302, 303, 304), // State.idle
     };
     protected static float[][] edgeInsetRatios = {
-            { 0.1f, 0.01f, 0.1f, 0.0f }, // State.running
-            { 0.1f, 0.20f, 0.1f, 0.0f }, // State.jump
-            { 0.2f, 0.20f, 0.2f, 0.0f }, // State.doubleJump
-            { 0.2f, 0.01f, 0.2f, 0.0f }, // State.falling
+            { -0.1f, 0.01f, 0.1f, 0.0f }, // State.running
+            { -0.0f, 0.0f, 0.1f, 0.0f }, // State.jump
+            { -0.0f, 0.1f, 0.1f, 0.0f }, // State.doubleJump
+            { -0.1f, 0.01f, 0.2f, 0.0f }, // State.falling
+            { -0.1f, 0.01f, 0.1f, 0.0f }, // State.idle
     };
     protected static Rect[] makeRects(int... indices) {
         Rect[] rects = new Rect[indices.length];
         for (int i = 0; i < indices.length; i++) {
             int idx = indices[i];
-            int l = 72 + (idx % 100) * 272;
-            int t = 132 + (idx / 100) * 272;
-            rects[i] = new Rect(l, t, l + 140, t + 140);
+            int l = 72 + (idx % 100) * 340;
+            int t = 130 + (idx / 100) * 340;
+            rects[i] = new Rect(l, t, l + 210, t + 195);
         }
         return rects;
     }
@@ -79,6 +81,9 @@ public class Player extends AnimSprite implements IBoxCollidable {
                 state = State.falling;
                 jumpSpeed = 0;
             }
+            break;
+        case idle:
+            break;
         }
     }
 

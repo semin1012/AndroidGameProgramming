@@ -18,20 +18,21 @@ public class MainScene extends BaseScene {
         Metrics.setGameSize(16.0f, 9.0f);
         initLayers(Layer.COUNT);
 
-        add(Layer.bg, new HorzScrollBackground(R.mipmap.cookie_run_bg_1, -0.2f));
-        add(Layer.bg, new HorzScrollBackground(R.mipmap.cookie_run_bg_2, -0.4f));
-        add(Layer.bg, new HorzScrollBackground(R.mipmap.cookie_run_bg_3, -0.6f));
+        add(Layer.bg, new HorzScrollBackground(R.mipmap.dontstop_bg_1, -0.2f));
+        add(Layer.bg, new HorzScrollBackground(R.mipmap.dontstop_bg_2, -0.4f));
+        add(Layer.bg, new HorzScrollBackground(R.mipmap.dontstop_bg_3, -0.6f));
+        add(Layer.bg, new HorzScrollBackground(R.mipmap.dontstop_bg_4, -0.8f));
 
         player = new Player();
         add(Layer.player, player);
 
-        add(Layer.touch, new Button(R.mipmap.btn_slide_n, 1.5f, 8.0f, 2.0f, 0.75f, new Button.Callback() {
-            @Override
-            public boolean onTouch() {
-                Log.d(TAG, "Button: Slide");
-                return true;
-            }
-        }));
+//        add(Layer.touch, new Button(R.mipmap.btn_slide_n, 1.5f, 8.0f, 2.0f, 0.75f, new Button.Callback() {
+//            @Override
+//            public boolean onTouch() {
+//                Log.d(TAG, "Button: Slide");
+//                return true;
+//            }
+//        }));
         add(Layer.touch, new Button(R.mipmap.btn_jump_n, 14.5f, 7.7f, 2.0f, 0.75f, new Button.Callback() {
             @Override
             public boolean onTouch() {
