@@ -26,8 +26,8 @@ public class MapLoader implements IGameObject {
             int y = random.nextInt(6) + 1;
             int count = 3;
             if (y < 5) {
-                Platform platform = Platform.get(Platform.Type.T_3x1, itemX, y+1);
-                scene.add(MainScene.Layer.platform, platform);
+                //Platform platform = Platform.get( Platform.Type.T_10x2, itemX, y+1);
+                //scene.add(MainScene.Layer.platform, platform);
             } else {
                 count = random.nextInt(5) + 1;
             }

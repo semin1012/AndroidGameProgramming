@@ -14,17 +14,16 @@ public class Platform extends MapObject {
         return type != Type.T_10x2;
     }
     public enum Type {
-        T_10x2, T_2x2, T_3x1, COUNT;
+        T_10x2, COUNT;
         int resId() { return resIds[this.ordinal()]; }
-        int width() { return widths[this.ordinal()]; }
+        float width() { return widths[this.ordinal()]; }
         int height() { return heights[this.ordinal()]; }
         static int[] resIds = {
-                R.mipmap.cookierun_platform_480x48,
-                R.mipmap.cookierun_platform_124x120,
-                R.mipmap.cookierun_platform_120x40,
+                R.mipmap.platform01,
+                R.mipmap.platform02,
         };
-        static int[] widths = { 10, 2, 3 };
-        static int[] heights = { 2, 2, 1 };
+        static float[] widths = { 5, 2.5f };
+        static int[] heights = { 1, 1 };
         static Type random(Random random) {
             return Type.values()[random.nextInt(2)];
         }
