@@ -63,13 +63,18 @@ public class MapLoader implements IGameObject {
             Platform platform = Platform.get(ptype, left, top);
             scene.add(MainScene.Layer.platform, platform);
             return;
-            //JellyItem item = JellyItem.get(tile - 1, left, top);
-            //scene.add(MainScene.Layer.item, item);
         }
 
         else if ( tile == 96 ) {
             Coin coin = Coin.get(left, top);
             scene.add(MainScene.Layer.coin, coin);
+            return;
+        }
+
+        else if (tile == 97 ) {
+            Obstacle obstacle = Obstacle.get(left, top);
+            scene.add(MainScene.Layer.coin, obstacle);
+            return;
         }
 //        if (tile == 61 || tile == 71 || tile == 73) {
 //            Platform.Type ptype =
