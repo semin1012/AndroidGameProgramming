@@ -11,7 +11,7 @@ import kr.ac.tukorea.ge.DontStop.framework.objects.AnimSprite;
 import kr.ac.tukorea.ge.DontStop.framework.scene.RecycleBin;
 
 public class Coin extends MapObject {
-    protected long createdOn;
+    protected static final long createdOn = System.currentTimeMillis();;
     protected float fps = 32;
     private static final int ITEMS_IN_A_ROW = 30;
     private static final int SIZE = 66;
@@ -36,7 +36,6 @@ public class Coin extends MapObject {
     }
 
     private void init(float left, float top) {
-        createdOn = System.currentTimeMillis();
         //setSrcRect(index);
         dstRect.set(left, top, left + width, top + height);
     }
@@ -87,6 +86,6 @@ public class Coin extends MapObject {
 
     @Override
     protected MainScene.Layer getLayer() {
-        return MainScene.Layer.item;
+        return MainScene.Layer.coin;
     }
 }

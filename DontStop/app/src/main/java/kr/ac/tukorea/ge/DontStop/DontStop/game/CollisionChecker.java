@@ -19,7 +19,7 @@ public class CollisionChecker implements IGameObject {
     @Override
     public void update() {
         MainScene scene = (MainScene) BaseScene.getTopScene();
-        ArrayList<IGameObject> items = scene.getObjectsAt(MainScene.Layer.item);
+        ArrayList<IGameObject> items = scene.getObjectsAt(MainScene.Layer.coin);
         for (int i = items.size() - 1; i >= 0; i--) {
             IGameObject gobj = items.get(i);
             if (!(gobj instanceof IBoxCollidable)) {
@@ -27,7 +27,7 @@ public class CollisionChecker implements IGameObject {
             }
             if (CollisionHelper.collides(player, (IBoxCollidable) gobj)) {
                 if ( gobj.getClass() == Coin.class) {
-                    scene.remove(MainScene.Layer.item, gobj);
+                    scene.remove(MainScene.Layer.coin, gobj);
 
                 }
             }

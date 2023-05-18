@@ -11,10 +11,10 @@ public class Platform extends MapObject {
     private Type type;
 
     public boolean canPass() {
-        return type != Type.T_10x2;
+        return type != Type.T_LONG;
     }
     public enum Type {
-        T_10x2, COUNT;
+        T_LONG, T_SHORT, COUNT;
         int resId() { return resIds[this.ordinal()]; }
         float width() { return widths[this.ordinal()]; }
         int height() { return heights[this.ordinal()]; }
@@ -22,7 +22,7 @@ public class Platform extends MapObject {
                 R.mipmap.platform01,
                 R.mipmap.platform02,
         };
-        static float[] widths = { 5, 2.5f };
+        static float[] widths = { 3, 2 };
         static int[] heights = { 1, 1 };
         static Type random(Random random) {
             return Type.values()[random.nextInt(2)];
