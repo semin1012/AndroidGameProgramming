@@ -89,7 +89,7 @@ public class Obstacle extends MapObject {
     @Override
     public void draw(Canvas canvas) {
         long now = System.currentTimeMillis();
-        Rect[] rects = srcRects[0];
+        Rect[] rects = srcRects[1];
         float time = (now - createdOn) / 3000.0f;
         int frameIndex = Math.round(time * fps) % rects.length;
 

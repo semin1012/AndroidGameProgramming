@@ -42,14 +42,24 @@ public class MainScene extends BaseScene {
                 return true;
             }
         }));
-        add(Layer.touch, new Button(R.mipmap.btn_fall_n, 14.5f, 8.5f, 2.0f, 0.75f, new Button.Callback() {
+
+        // 캐릭터 변경
+        add(Layer.touch, new Button(R.mipmap.attack_button01, 1.1f, 8.0f, 1.9f, 1.9f, new Button.Callback() {
             @Override
             public boolean onTouch() {
-                //Log.d(TAG, "Button: Fall");
-                player.fall();
+                player.ChangeCharacter(Player.Type.CAPTINE);
                 return true;
             }
         }));
+        add(Layer.touch, new Button(R.mipmap.attack_button02, 3.0f, 8.0f, 1.9f, 1.9f, new Button.Callback() {
+            @Override
+            public boolean onTouch() {
+                player.ChangeCharacter(Player.Type.PEPPERMINT);
+                return true;
+            }
+        }));
+
+
         add(Layer.controller, new MapLoader(context));
         add(Layer.controller, new CollisionChecker(player));
     }

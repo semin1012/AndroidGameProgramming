@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import kr.ac.tukorea.ge.DontStop.DontStop.R;
 import kr.ac.tukorea.ge.DontStop.framework.interfaces.IBoxCollidable;
@@ -14,16 +15,31 @@ import kr.ac.tukorea.ge.DontStop.framework.scene.BaseScene;
 import kr.ac.tukorea.ge.DontStop.framework.view.Metrics;
 
 public class Player extends AnimSprite implements IBoxCollidable {
+    private Type type;
     private float jumpSpeed;
     private static final float JUMP_POWER = 9.0f;
     private static final float GRAVITY = 17.0f;
     private RectF collisionRect = new RectF();
 
+    public enum Type {
+        CAPTINE, PEPPERMINT, COUNT;
+        int resId() { return resIds[this.ordinal()]; }
+        static int[] resIds = {
+                R.mipmap.cookie001,
+                R.mipmap.cookie002,
+        };
+    }
+
     private int coinNum = 0;
 
     public Player() {
-        super(R.mipmap.cookie002, 2.0f, 3.0f, 2.0f, 2.0f, 8, 1);
+        super(R.mipmap.cookie001, 2.0f, 3.0f, 2.0f, 2.0f, 8, 1);
+        //setBitmapResource(type.resId());
         fixCollisionRect();
+    }
+
+    public void ChangeCharacter(Type type) {
+        setAnimationResource(type.resId(), 8, 1);
     }
 
     protected enum State {
