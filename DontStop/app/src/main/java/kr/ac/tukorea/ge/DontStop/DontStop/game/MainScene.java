@@ -1,7 +1,6 @@
 package kr.ac.tukorea.ge.DontStop.DontStop.game;
 
 import android.content.Context;
-import android.util.Log;
 
 import kr.ac.tukorea.ge.DontStop.DontStop.R;
 import kr.ac.tukorea.ge.DontStop.framework.objects.Button;
@@ -34,27 +33,34 @@ public class MainScene extends BaseScene {
 //                return true;
 //            }
 //        }));
-        add(Layer.touch, new Button(R.mipmap.btn_jump_n, 14.5f, 7.7f, 2.0f, 0.75f, new Button.Callback() {
+        add(Layer.touch, new Button(R.mipmap.btn_jump_no, 14.5f, 8.0f, 2.0f, 1.5f, new Button.Callback() {
             @Override
             public boolean onTouch() {
                 player.jump();
-                //Log.d(TAG, "Button: Jump");
                 return true;
             }
         }));
+        add(Layer.touch, new Button(R.mipmap.btn_attack_no, 12.5f, 8.0f, 2.0f, 1.5f, new Button.Callback() {
+            @Override
+            public boolean onTouch() {
+                player.attack();
+                return true;
+            }
+        }));
+
 
         // 캐릭터 변경
         add(Layer.touch, new Button(R.mipmap.attack_button01, 1.1f, 8.0f, 1.9f, 1.9f, new Button.Callback() {
             @Override
             public boolean onTouch() {
-                player.ChangeCharacter(Player.Type.CAPTINE);
+                player.changeCharacter(Player.Type.CAPTINE);
                 return true;
             }
         }));
         add(Layer.touch, new Button(R.mipmap.attack_button02, 3.0f, 8.0f, 1.9f, 1.9f, new Button.Callback() {
             @Override
             public boolean onTouch() {
-                player.ChangeCharacter(Player.Type.PEPPERMINT);
+                player.changeCharacter(Player.Type.PEPPERMINT);
                 return true;
             }
         }));
