@@ -121,6 +121,14 @@ public class Player extends AnimSprite implements IBoxCollidable {
                 y += dy;
                 dstRect.offset(0, dy);
             }
+            else {
+                foot = collisionRect.bottom;
+                floor = findNearestPlatformTop(foot);
+                if (foot < floor) {
+                    state = State.falling;
+                    jumpSpeed = 0;
+                }
+            }
             break;
         }
 
