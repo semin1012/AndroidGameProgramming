@@ -14,6 +14,10 @@
 
         <activity
             android:name=".app.MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".app.TitleActivity"
             android:screenOrientation="landscape"
             android:theme="@style/FullScreenTheme"
             android:exported="true">
