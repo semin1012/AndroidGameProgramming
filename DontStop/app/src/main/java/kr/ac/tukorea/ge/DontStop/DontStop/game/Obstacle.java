@@ -25,13 +25,13 @@ public class Obstacle extends MapObject {
     };
 
     public enum Type {
-        T_TREE;
+        T_TREE, T_THUNDER, T_STEM, COUNT;
 
         float width() { return widths[this.ordinal()]; }
         int height() { return heights[this.ordinal()]; }
 
-        static float[] widths = { 3, 2 };
-        static int[] heights = { 1, 1 };
+        static float[] widths = { 3, 3, 2 };
+        static int[] heights = { 5, 5, 5 };
         static Platform.Type random(Random random) {
             return Platform.Type.values()[random.nextInt(2)];
         }
