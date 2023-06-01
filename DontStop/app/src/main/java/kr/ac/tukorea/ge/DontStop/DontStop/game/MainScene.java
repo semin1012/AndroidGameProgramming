@@ -26,21 +26,16 @@ public class MainScene extends BaseScene {
         player = new Player();
         add(Layer.player, player);
 
-//        add(Layer.touch, new Button(R.mipmap.btn_slide_n, 1.5f, 8.0f, 2.0f, 0.75f, new Button.Callback() {
-//            @Override
-//            public boolean onTouch() {
-//                Log.d(TAG, "Button: Slide");
-//                return true;
-//            }
-//        }));
-        add(Layer.touch, new Button(R.mipmap.btn_jump_no, 14.5f, 8.0f, 2.0f, 1.5f, new Button.Callback() {
+        Button jumpBnt = new Button(R.mipmap.btn_jump_no, 14.5f, 8.0f, 2.0f, 1.5f, false, new Button.Callback() {
             @Override
             public boolean onTouch() {
                 player.jump();
                 return true;
             }
-        }));
-        add(Layer.touch, new Button(R.mipmap.btn_attack_no, 12.5f, 8.0f, 2.0f, 1.5f, new Button.Callback() {
+        });
+
+        add(Layer.touch, jumpBnt);
+        add(Layer.touch, new Button(R.mipmap.btn_attack_no, 12.5f, 8.0f, 2.0f, 1.5f, true, new Button.Callback() {
             @Override
             public boolean onTouch() {
                 player.attack();
@@ -50,14 +45,14 @@ public class MainScene extends BaseScene {
 
 
         // 캐릭터 변경
-        add(Layer.touch, new Button(R.mipmap.attack_button01, 1.1f, 8.0f, 1.9f, 1.9f, new Button.Callback() {
+        add(Layer.touch, new Button(R.mipmap.attack_button01, 1.1f, 8.0f, 1.9f, 1.9f, false, new Button.Callback() {
             @Override
             public boolean onTouch() {
                 player.changeCharacter(Player.Type.CAPTINE);
                 return true;
             }
         }));
-        add(Layer.touch, new Button(R.mipmap.attack_button02, 3.0f, 8.0f, 1.9f, 1.9f, new Button.Callback() {
+        add(Layer.touch, new Button(R.mipmap.attack_button02, 3.0f, 8.0f, 1.9f, 1.9f, false, new Button.Callback() {
             @Override
             public boolean onTouch() {
                 player.changeCharacter(Player.Type.PEPPERMINT);

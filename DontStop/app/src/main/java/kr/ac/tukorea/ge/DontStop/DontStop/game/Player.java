@@ -1,10 +1,14 @@
 package kr.ac.tukorea.ge.DontStop.DontStop.game;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Handler;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import kr.ac.tukorea.ge.DontStop.DontStop.R;
 import kr.ac.tukorea.ge.DontStop.framework.interfaces.IBoxCollidable;
@@ -24,7 +28,7 @@ public class Player extends AnimSprite implements IBoxCollidable {
         CAPTINE, PEPPERMINT, COUNT;
         int resId() { return resIds[this.ordinal()]; }
         static int[] resIds = {
-                R.mipmap.cookie001,
+                R.mipmap.maple001,
                 R.mipmap.cookie002,
         };
     }
@@ -32,7 +36,7 @@ public class Player extends AnimSprite implements IBoxCollidable {
     private int coinNum = 0;
 
     public Player() {
-        super(R.mipmap.cookie001, 2.0f, 3.0f, 2.0f, 2.0f, 8, 1);
+        super(Type.CAPTINE.resId(), 2.0f, 3.0f, 2.0f, 2.0f, 8, 1);
         //setBitmapResource(type.resId());
         fixCollisionRect();
     }
@@ -50,11 +54,11 @@ public class Player extends AnimSprite implements IBoxCollidable {
 //    protected Rect[] srcRects
     protected static Rect[][] srcRects = {
             makeRects(100, 101, 102, 103),      // State.running
-            makeRects(1, 2),                    // State.jump
-            makeRects(1, 2, 3, 4, 5),           // State.doubleJump
-            makeRects(5),                       // State.falling
+            makeRects(0),                    // State.jump
+            makeRects(0),           // State.doubleJump
+            makeRects(0),                       // State.falling
             makeRects(300, 301, 302, 303, 304), // State.idle
-            makeRects(400, 401, 402, 403, 404, 405, 406, 407), // State.attack
+            makeRects(400, 401, 402, 403, 404, 405), // State.attack
     };
     protected static float[][] edgeInsetRatios = {
             { -0.1f, 0.01f, 0.1f, 0.0f }, // State.running
@@ -206,6 +210,13 @@ public class Player extends AnimSprite implements IBoxCollidable {
     public void attack() {
         preState = state;
         state = State.attack;
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                state = preState;
+            }
+        }, 1000); //딜레이 타임 조절
     }
 
     public void SetCoinCount(int num) {
