@@ -25,18 +25,19 @@ public class Player extends AnimSprite implements IBoxCollidable {
     private RectF collisionRect = new RectF();
 
     public enum Type {
-        CAPTINE, PEPPERMINT, COUNT;
+        SWORD, WIZARD, ARCHER;
         int resId() { return resIds[this.ordinal()]; }
         static int[] resIds = {
                 R.mipmap.maple001,
-                R.mipmap.cookie002,
+                R.mipmap.maple002,
+                R.mipmap.maple003
         };
     }
 
     private int coinNum = 0;
 
     public Player() {
-        super(Type.CAPTINE.resId(), 2.0f, 3.0f, 2.0f, 2.0f, 8, 1);
+        super(Type.SWORD.resId(), 2.0f, 3.0f, 2.0f, 2.0f, 8, 1);
         //setBitmapResource(type.resId());
         fixCollisionRect();
     }
@@ -214,7 +215,7 @@ public class Player extends AnimSprite implements IBoxCollidable {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                state = preState;
+                state = State.doubleJump;
             }
         }, 1000); //딜레이 타임 조절
     }

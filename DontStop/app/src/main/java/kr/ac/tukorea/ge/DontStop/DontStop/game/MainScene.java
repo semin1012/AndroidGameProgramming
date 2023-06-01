@@ -45,17 +45,24 @@ public class MainScene extends BaseScene {
 
 
         // 캐릭터 변경
-        add(Layer.touch, new Button(R.mipmap.attack_button01, 1.1f, 8.0f, 1.9f, 1.9f, false, new Button.Callback() {
+        add(Layer.touch, new Button(R.mipmap.attack_button_maple02, 1.1f, 8.1f, 1.7f, 1.7f, false, new Button.Callback() {
             @Override
             public boolean onTouch() {
-                player.changeCharacter(Player.Type.CAPTINE);
+                player.changeCharacter(Player.Type.SWORD);
                 return true;
             }
         }));
-        add(Layer.touch, new Button(R.mipmap.attack_button02, 3.0f, 8.0f, 1.9f, 1.9f, false, new Button.Callback() {
+        add(Layer.touch, new Button(R.mipmap.attack_button_maple01, 2.8f, 8.1f, 1.7f, 1.7f, false, new Button.Callback() {
             @Override
             public boolean onTouch() {
-                player.changeCharacter(Player.Type.PEPPERMINT);
+                player.changeCharacter(Player.Type.WIZARD);
+                return true;
+            }
+        }));
+        add(Layer.touch, new Button(R.mipmap.attack_button_maple03, 4.5f, 8.1f, 1.7f, 1.7f, false, new Button.Callback() {
+            @Override
+            public boolean onTouch() {
+                player.changeCharacter(Player.Type.ARCHER);
                 return true;
             }
         }));
