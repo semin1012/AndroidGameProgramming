@@ -40,14 +40,6 @@ public class Coin extends MapObject {
         dstRect.set(left, top, left + width, top + height);
     }
 
-    private void setSrcRect(int index) {
-        int x = index % ITEMS_IN_A_ROW;
-        int y = index / ITEMS_IN_A_ROW;
-        int left = x * (SIZE + BORDER) + BORDER;
-        int top = y * (SIZE + BORDER) + BORDER;
-        //srcRect.set(left, top, left + SIZE, top + SIZE);
-    }
-
     @Override
     public void update() {
         super.update();

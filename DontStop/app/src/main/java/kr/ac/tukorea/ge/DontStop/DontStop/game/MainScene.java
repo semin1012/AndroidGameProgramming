@@ -13,7 +13,7 @@ public class MainScene extends BaseScene {
     private final Button attackBnt;
 
     public enum Layer {
-        bg, platform, coin, obstacle, player, ui, touch, controller, item, COUNT
+        bg, platform, coin, obstacle, player, ui, touch, controller, item, attackBall, COUNT
     }
     public MainScene(Context context) {
         Metrics.setGameSize(16.0f, 9.0f);
@@ -41,6 +41,11 @@ public class MainScene extends BaseScene {
             @Override
             public boolean onTouch() {
                 player.attack();
+                
+                MainScene scene = (MainScene) BaseScene.getTopScene();
+                Ball ball = Ball.get(8, 6);
+                scene.add(MainScene.Layer.attackBall, ball);
+
                 return true;
             }
         });
@@ -74,9 +79,9 @@ public class MainScene extends BaseScene {
             }
         }));
 
-
         add(Layer.controller, new MapLoader(context));
         add(Layer.controller, new CollisionChecker(player));
+
     }
 
 //    @Override
