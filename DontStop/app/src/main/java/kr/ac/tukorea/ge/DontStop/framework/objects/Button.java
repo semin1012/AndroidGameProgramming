@@ -13,6 +13,7 @@ public class Button extends Sprite implements ITouchable {
     private final Callback callback;
     private boolean isAttack;
     private boolean bAttackTouch = true;
+    public Handler handler = new Handler();
 
     public interface Callback {
         public boolean onTouch();
@@ -27,6 +28,11 @@ public class Button extends Sprite implements ITouchable {
         bitmap = BitmapPool.get(bitmapResId);
     }
 
+    public void setButtonInit() {
+        handler.removeCallbacksAndMessages(null);
+        setBitmapResource(R.mipmap.btn_attack_no);
+        bAttackTouch = true;
+    }
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         float x = Metrics.toGameX(e.getX());
@@ -49,12 +55,10 @@ public class Button extends Sprite implements ITouchable {
                     callback.onTouch();
 
                     // 1초 뒤에 다시 누를 수 있다
-                    Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            setBitmapResource(R.mipmap.btn_attack_no);
-                            bAttackTouch = true;
+                            setButtonInit();
                         }
                     }, 1000); //딜레이 타임 조절
                 }

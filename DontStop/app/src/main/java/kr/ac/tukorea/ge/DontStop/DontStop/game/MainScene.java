@@ -10,6 +10,7 @@ import kr.ac.tukorea.ge.DontStop.framework.view.Metrics;
 public class MainScene extends BaseScene {
     private static final String TAG = MainScene.class.getSimpleName();
     private final Player player;
+    private final Button attackBnt;
 
     public enum Layer {
         bg, platform, coin, obstacle, player, ui, touch, controller, item, COUNT
@@ -35,13 +36,16 @@ public class MainScene extends BaseScene {
         });
 
         add(Layer.touch, jumpBnt);
-        add(Layer.touch, new Button(R.mipmap.btn_attack_no, 12.5f, 8.0f, 2.0f, 1.5f, true, new Button.Callback() {
+
+        attackBnt =  new Button(R.mipmap.btn_attack_no, 12.5f, 8.0f, 2.0f, 1.5f, true, new Button.Callback() {
             @Override
             public boolean onTouch() {
                 player.attack();
                 return true;
             }
-        }));
+        });
+
+        add(Layer.touch, attackBnt);
 
 
         // 캐릭터 변경
@@ -49,6 +53,7 @@ public class MainScene extends BaseScene {
             @Override
             public boolean onTouch() {
                 player.changeCharacter(Player.Type.SWORD);
+                attackBnt.setButtonInit();
                 return true;
             }
         }));
@@ -56,6 +61,7 @@ public class MainScene extends BaseScene {
             @Override
             public boolean onTouch() {
                 player.changeCharacter(Player.Type.WIZARD);
+                attackBnt.setButtonInit();
                 return true;
             }
         }));
@@ -63,6 +69,7 @@ public class MainScene extends BaseScene {
             @Override
             public boolean onTouch() {
                 player.changeCharacter(Player.Type.ARCHER);
+                attackBnt.setButtonInit();
                 return true;
             }
         }));

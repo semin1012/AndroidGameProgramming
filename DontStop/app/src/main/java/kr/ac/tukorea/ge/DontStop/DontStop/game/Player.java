@@ -24,6 +24,8 @@ public class Player extends AnimSprite implements IBoxCollidable {
     private static final float GRAVITY = 17.0f;
     private RectF collisionRect = new RectF();
 
+    Handler handler = new Handler();
+
     public enum Type {
         SWORD, WIZARD, ARCHER;
         int resId() { return resIds[this.ordinal()]; }
@@ -44,6 +46,8 @@ public class Player extends AnimSprite implements IBoxCollidable {
 
     public void changeCharacter(Type type) {
         setAnimationResource(type.resId(), 8, 1);
+        handler.removeCallbacksAndMessages(null);
+        state = State.doubleJump;
     }
 
     protected enum State {
@@ -211,7 +215,6 @@ public class Player extends AnimSprite implements IBoxCollidable {
     public void attack() {
         preState = state;
         state = State.attack;
-        Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
