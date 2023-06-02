@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -16,7 +17,7 @@ import kr.ac.tukorea.ge.DontStop.framework.scene.RecycleBin;
 import kr.ac.tukorea.ge.DontStop.framework.view.Metrics;
 
 public class Ball extends MapObject {
-    private Player.Type type;
+    public Ball.Type type;
     protected float fps = 32;
     private float flyingSpeed;
     private static final float FLYING_POWER = 9.0f;
@@ -28,7 +29,9 @@ public class Ball extends MapObject {
     public enum Type {
         SWORD, WIZARD, ARCHER;
         int resId() { return resIds[this.ordinal()]; }
+
         static int[] resIds = {
+                R.mipmap.effect01,
                 R.mipmap.effect01,
         };
     }
@@ -43,47 +46,67 @@ public class Ball extends MapObject {
 
     };
 
+    protected static float[][] edgeInsetRatios = {
+            { 0.1f, 0.1f, -0.1f, 0.1f },
+    };
+
+
     public Ball() {
         setBitmapResource(R.mipmap.effect01);
-        width = height = 1;
+        width = height = 2;
         //setBitmapResource(type.resId());
     }
 
-    public static Ball get(float left, float top) {
+    public static Ball get(float left, float top, Type type) {
         Ball item = (Ball) RecycleBin.get(Ball.class);
         if (item == null) {
             item = new Ball();
         }
-        item.init(left, top);
+        if ( left == 0 && top == 0 ) {
+            item.init(2, 5, type);
+        }
+        else { item.init(left, top - 0.5f, type); };
         return item;
     }
 
-    private void init(float left, float top) {
+    private void init(float left, float top, Type type) {
         dstRect.set(left, top, left + width, top + height);
+        this.type = type;
     }
 
 
+    float frameRate = 3.f;
+    boolean movable = true;
     @Override
     public void update() {
         super.update();
+        float[] insets = edgeInsetRatios[type.ordinal()];
         collisionRect.set(
-                dstRect.left + width * INSET,
-                dstRect.top + height * INSET,
-                dstRect.right - width * INSET,
-                dstRect.bottom - height * INSET);
+                dstRect.left + width * insets[0],
+                dstRect.top + height * insets[1],
+                dstRect.right - width * insets[2],
+                dstRect.bottom - height * insets[3]);
+
+        if ( movable ) {
+            float dx = flyingSpeed * BaseScene.frameTime;
+            frameRate -= BaseScene.frameTime * 2.7f;
+            flyingSpeed = 9 * frameRate;
+            dstRect.offset(dx, 0);
+        }
+        if ( dstRect.left >= 12 ) {
+            movable = false;
+        }
+
+
     }
 
-
-    protected static float[][] edgeInsetRatios = {
-            { -0.1f, 0.01f, 0.1f, 0.0f },
-    };
     protected static Rect[] makeRects(int... indices) {
         Rect[] rects = new Rect[indices.length];
         for (int i = 0; i < indices.length; i++) {
             int idx = indices[i];
             int l = (idx % 100) * 192;
-            int t = (idx / 100) * 192;
-            rects[i] = new Rect(l, t, l + 192, t + 192);
+            int t = (idx / 100) * 190;
+            rects[i] = new Rect(l, t, l + 190, t + 188);
         }
         return rects;
     }

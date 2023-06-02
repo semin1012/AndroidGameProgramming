@@ -11,6 +11,7 @@ public class MainScene extends BaseScene {
     private static final String TAG = MainScene.class.getSimpleName();
     private final Player player;
     private final Button attackBnt;
+    int playerCharacterNum = 0;
 
     public enum Layer {
         bg, platform, coin, obstacle, player, ui, touch, controller, item, attackBall, COUNT
@@ -23,6 +24,8 @@ public class MainScene extends BaseScene {
         add(Layer.bg, new HorzScrollBackground(R.mipmap.dontstop_bg_2, -0.4f));
         add(Layer.bg, new HorzScrollBackground(R.mipmap.dontstop_bg_3, -0.6f));
         add(Layer.bg, new HorzScrollBackground(R.mipmap.dontstop_bg_4, -0.8f));
+
+        // 0 - 전사, 1 - 마법사, 2 - 궁수
 
         player = new Player();
         add(Layer.player, player);
@@ -41,9 +44,16 @@ public class MainScene extends BaseScene {
             @Override
             public boolean onTouch() {
                 player.attack();
-                
+
                 MainScene scene = (MainScene) BaseScene.getTopScene();
-                Ball ball = Ball.get(8, 6);
+
+                Ball.Type type = Ball.Type.SWORD;
+                // 플레이어가 현재 sword 라면
+                if ( playerCharacterNum == 0 ) {
+                    type = Ball.Type.SWORD;
+                }
+
+                Ball ball = Ball.get(2, player.y, type);
                 scene.add(MainScene.Layer.attackBall, ball);
 
                 return true;
@@ -59,6 +69,7 @@ public class MainScene extends BaseScene {
             public boolean onTouch() {
                 player.changeCharacter(Player.Type.SWORD);
                 attackBnt.setButtonInit();
+                playerCharacterNum = 0;
                 return true;
             }
         }));
@@ -67,6 +78,7 @@ public class MainScene extends BaseScene {
             public boolean onTouch() {
                 player.changeCharacter(Player.Type.WIZARD);
                 attackBnt.setButtonInit();
+                playerCharacterNum = 1;
                 return true;
             }
         }));
@@ -75,6 +87,7 @@ public class MainScene extends BaseScene {
             public boolean onTouch() {
                 player.changeCharacter(Player.Type.ARCHER);
                 attackBnt.setButtonInit();
+                playerCharacterNum = 2;
                 return true;
             }
         }));

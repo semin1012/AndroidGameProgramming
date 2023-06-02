@@ -18,17 +18,19 @@ import kr.ac.tukorea.ge.DontStop.framework.scene.BaseScene;
 import kr.ac.tukorea.ge.DontStop.framework.view.Metrics;
 
 public class Player extends AnimSprite implements IBoxCollidable {
-    private Type type;
+    public Type type;
     private float jumpSpeed;
     private static final float JUMP_POWER = 9.0f;
     private static final float GRAVITY = 17.0f;
     private RectF collisionRect = new RectF();
+    public float dy;
 
     Handler handler = new Handler();
 
     public enum Type {
-        SWORD, WIZARD, ARCHER;
+        SWORD, WIZARD, ARCHER, COUNT;
         int resId() { return resIds[this.ordinal()]; }
+        int getNum() { return this.ordinal(); }
         static int[] resIds = {
                 R.mipmap.maple001,
                 R.mipmap.maple002,
@@ -91,7 +93,7 @@ public class Player extends AnimSprite implements IBoxCollidable {
         case jump:
         case doubleJump:
         case falling:
-            float dy = jumpSpeed * BaseScene.frameTime;
+            dy = jumpSpeed * BaseScene.frameTime;
             jumpSpeed += GRAVITY * BaseScene.frameTime;
             if (jumpSpeed >= 0) { // 낙하하고 있다면 발밑에 땅이 있는지 확인한다
                 float foot = collisionRect.bottom;
