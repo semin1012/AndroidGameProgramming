@@ -76,9 +76,9 @@ public class Ball extends AnimSprite implements IBoxCollidable {
     public void draw(Canvas canvas) {
         long now = System.currentTimeMillis();
         float time = (now - createdOn) / 1000.0f;
-        Rect[] rects = srcRects[state.ordinal()];
-        int frameIndex = Math.round(time * fps) % rects.length;
-        canvas.drawBitmap(bitmap, rects[frameIndex], dstRect, null);
+        //Rect[] rects = srcRects[state.ordinal()];
+        //int frameIndex = Math.round(time * fps) % rects.length;
+        //canvas.drawBitmap(bitmap, rects[frameIndex], dstRect, null);
     }
 
     @Override

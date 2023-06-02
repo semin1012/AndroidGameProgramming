@@ -3,6 +3,7 @@ package kr.ac.tukorea.ge.DontStop.DontStop.game;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -19,10 +20,14 @@ public class Obstacle extends MapObject {
     public static final float INSET = 0.03f;
     protected RectF collisionRect = new RectF();
     protected static Rect[][] srcRects = {
-            makeRects(0, 1, 2, 3, 4, 5, 6, 7),
-            makeRects(100, 101, 102, 103),
-            makeRects(200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210),
+            makeRects(false, 0, 1, 2, 3, 4, 5, 6, 7),
+            makeRects(false, 100, 101, 102, 103),
+            makeRects(true, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210),
     };
+
+    private float width;
+    private float height;
+    private boolean isStemItem;
 
     public enum Type {
         T_TREE, T_THUNDER, T_STEM, COUNT;
@@ -37,22 +42,29 @@ public class Obstacle extends MapObject {
         }
     }
 
+    public Type type;
+
     Obstacle() {
         setBitmapResource(R.mipmap.obstance);
         width = height = 1;
     }
-    public static Obstacle get(float left, float top) {
+    public static Obstacle get(float left, float top, boolean isStem) {
         Obstacle item = (Obstacle) RecycleBin.get(Obstacle.class);
         if (item == null) {
             item = new Obstacle();
         }
-        item.init(left, top);
+        item.init(left, top, isStem);
         return item;
     }
 
-    private void init(float left, float top) {
-        width = 3;
-        height = 5;
+    private void init(float left, float top, boolean isStem) {
+        if ( isStem == true ) { this.width = 2; }
+        else { this.width = 3; };
+
+        this.isStemItem = isStem;
+
+            Log.d("태그", "isStem false");
+        this.height = 5;
         // Platform 은 x,y 를 사용하지 않고 dstRect 만을 사용하도록 한다.
         dstRect.set(left, top, left + width, top + height);
     }
@@ -75,13 +87,17 @@ public class Obstacle extends MapObject {
                 dstRect.bottom - height * INSET);
     }
 
-    protected static Rect[] makeRects(int... indices) {
+    protected static Rect[] makeRects(boolean bisStem, int... indices) {
         Rect[] rects = new Rect[indices.length];
         for (int i = 0; i < indices.length; i++) {
             int idx = indices[i];
-            int l = (idx % 100) * 90;
+            int l = (idx % 100);
+            int d;
+            if ( bisStem == true ) { d = 60; }
+            else { d = 90; }
+            l = l * d;
             int t = (idx / 100) * 150;
-            rects[i] = new Rect(l, t, l + 90, t + 150);
+            rects[i] = new Rect(l, t, l + d, t + 150);
         }
         return rects;
     }
@@ -89,12 +105,21 @@ public class Obstacle extends MapObject {
     @Override
     public void draw(Canvas canvas) {
         long now = System.currentTimeMillis();
-        Rect[] rects = srcRects[1];
-        float time = (now - createdOn) / 3000.0f;
-        int frameIndex = Math.round(time * fps) % rects.length;
+        Rect[] rects = srcRects[type.ordinal()];
 
+        int frameIndex;
+
+        if ( type.ordinal() != 2 ) {
+            float time = (now - createdOn) / 3000.0f;
+            frameIndex = Math.round(time * fps) % rects.length;
+        }
+        else {
+            float time = (now - createdOn) / 3000.0f;
+            frameIndex = Math.round(time * fps) % rects.length;
+        }
         canvas.drawBitmap(bitmap, rects[frameIndex], dstRect, null);
     }
+
 
     @Override
     public RectF getCollisionRect() {

@@ -12,7 +12,7 @@ public class MainScene extends BaseScene {
     private final Player player;
 
     public enum Layer {
-        bg, platform, coin, player, ui, touch, controller, item, COUNT
+        bg, platform, coin, obstacle, player, ui, touch, controller, item, COUNT
     }
     public MainScene(Context context) {
         Metrics.setGameSize(16.0f, 9.0f);

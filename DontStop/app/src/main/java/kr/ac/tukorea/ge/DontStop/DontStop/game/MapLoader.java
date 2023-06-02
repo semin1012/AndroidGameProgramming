@@ -71,20 +71,18 @@ public class MapLoader implements IGameObject {
             return;
         }
 
-        else if (tile == 97 ) {
-            Obstacle obstacle = Obstacle.get(left, top);
-            scene.add(MainScene.Layer.coin, obstacle);
+        else if (tile == 97 || tile == 102 || tile == 100) {
+            Obstacle obstacle =
+                    tile == 97? Obstacle.get(left, top, false) :
+                            tile == 102? Obstacle.get(left, top, false) :
+                                    Obstacle.get(left, top, true);
+            obstacle.type =
+                    tile == 97? Obstacle.Type.T_TREE :
+                            tile == 102? Obstacle.Type.T_THUNDER :
+                                    Obstacle.Type.T_STEM;
+            scene.add(MainScene.Layer.obstacle, obstacle);
             return;
         }
-//        if (tile == 61 || tile == 71 || tile == 73) {
-//            Platform.Type ptype =
-//                    tile == 61 ? Platform.Type.T_10x2 :
-//                            tile == 71 ? Platform.Type.T_2x2 :
-//                                    Platform.Type.T_3x1;
-//            Platform platform = Platform.get(ptype, left, top);
-//            scene.add(MainScene.Layer.platform, platform);
-//            return;
-//        }
     }
 
     private int getAt(int col, int row) {
