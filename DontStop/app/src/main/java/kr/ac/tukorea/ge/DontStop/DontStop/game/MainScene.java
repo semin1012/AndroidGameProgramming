@@ -2,12 +2,17 @@ package kr.ac.tukorea.ge.DontStop.DontStop.game;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+
+import java.util.ArrayList;
 
 import kr.ac.tukorea.ge.DontStop.DontStop.R;
+import kr.ac.tukorea.ge.DontStop.framework.interfaces.IGameObject;
 import kr.ac.tukorea.ge.DontStop.framework.objects.Button;
 import kr.ac.tukorea.ge.DontStop.framework.objects.Score;
 import kr.ac.tukorea.ge.DontStop.framework.objects.Sprite;
 import kr.ac.tukorea.ge.DontStop.framework.scene.BaseScene;
+import kr.ac.tukorea.ge.DontStop.framework.view.GameView;
 import kr.ac.tukorea.ge.DontStop.framework.view.Metrics;
 
 public class MainScene extends BaseScene {
@@ -18,9 +23,9 @@ public class MainScene extends BaseScene {
     int playerCharacterNum = 0;
 
     public enum Layer {
-        bg, platform, coin, obstacle, player, ui, touch, controller, item, attackBall, score, COUNT
+        bg, platform, coin, obstacle, player, ui,  controller, item, attackBall, score, touch, COUNT
     }
-    public MainScene(Context context, Bundle extras) {
+    public MainScene(Context context) {
         Metrics.setGameSize(16.0f, 9.0f);
         initLayers(Layer.COUNT);
 
@@ -110,7 +115,12 @@ public class MainScene extends BaseScene {
     }
 
     public void getScoreActivity() {
-
+        MainScene scene = (MainScene) BaseScene.getTopScene();
+        ArrayList<IGameObject> touchs = scene.getObjectsAt(MainScene.Layer.touch);
+        for (int i = touchs.size() - 1; i >= 0; i--) {
+            IGameObject gobj = touchs.get(i);
+            remove(Layer.touch, gobj);
+        }
         add(Layer.score, new HorzScrollBackground(R.mipmap.ovenbreak0006_tm003_bg1, -0.2f));
         add(Layer.score, new HorzScrollBackground(R.mipmap.ovenbreak0006_tm003_bg2, -0.4f));
         add(Layer.score, new HorzScrollBackground(R.mipmap.ovenbreak0006_tm003_bg3, -0.6f));
@@ -121,12 +131,17 @@ public class MainScene extends BaseScene {
         score.dstCharWidth = 2.f;
         add(Layer.score, score);
        // add(Layer.score, new Sprite(R.mipmap.score_png, 8.0f, 4.5f, 16, 9));
-        add(Layer.touch, new Button(R.mipmap.attack_button_maple03, 4.5f, 8.1f, 1.7f, 1.7f, false, new Button.Callback() {
+        add(Layer.touch, new Button(R.mipmap.again_btn, 14.5f, 8.0f, 3.f, 2.f, false, new Button.Callback() {
             @Override
             public boolean onTouch() {
-                player.changeCharacter(Player.Type.ARCHER);
-                attackBnt.setButtonInit();
-                playerCharacterNum = 2;
+                MainScene scene = (MainScene) BaseScene.getTopScene();
+                ArrayList<IGameObject> obstacles = scene.getObjectsAt(MainScene.Layer.obstacle);
+                // 다른 오브젝트들이 움직이지 않도록 스피드 조정
+                for (int i = obstacles.size() - 1; i >= 0; i--) {
+                    IGameObject gobj = obstacles.get(i);
+                    ((MapObject) gobj).SPEED = 3.5f;
+                }
+                GameView.view.getActivity().finishAndRemoveTask();
                 return true;
             }
         }));

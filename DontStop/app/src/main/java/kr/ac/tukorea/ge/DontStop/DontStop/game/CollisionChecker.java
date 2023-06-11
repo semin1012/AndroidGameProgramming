@@ -52,7 +52,10 @@ public class CollisionChecker implements IGameObject {
                     if (gobj.getClass() == Obstacle.class && bobj.getClass() == Ball.class) {
                         if  ( ((Ball) bobj).type == Ball.Type.SWORD ) {
                             if ( ((Obstacle) gobj).type == Obstacle.Type.T_THUNDER ) {
+                                ((Ball) bobj).dstRect.top += 500.f;
+                                ((Ball) bobj).dstRect.bottom += 500.f;
                                 scene.remove(MainScene.Layer.obstacle, gobj);
+                                scene.remove(MainScene.Layer.attackBall, bobj);
                                 int score = scene.score.getScore();
                                 scene.score.add(50);
                             }

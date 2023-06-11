@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(gameView);
 
 
-        gameView.mainScene = new MainScene(this, extras);
+        gameView.mainScene = new MainScene(this);
         gameView.mainScene.pushScene();
     }
 
