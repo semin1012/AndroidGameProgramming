@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -226,7 +227,8 @@ public class Player extends AnimSprite implements IBoxCollidable {
     }
 
     public void SetCoinCount(int num) {
-        coinNum = num;
+        coinNum += num;
+        Log.d("TAG", "SetCoinCount: " + coinNum);
     }
 
     public int GetCoinCount() {

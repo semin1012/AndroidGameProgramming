@@ -17,7 +17,7 @@ import kr.ac.tukorea.ge.DontStop.framework.scene.RecycleBin;
 import kr.ac.tukorea.ge.DontStop.framework.view.Metrics;
 
 public class Ball extends MapObject {
-    public Ball.Type type;
+    public Type type;
     protected float fps = 32;
     private float flyingSpeed;
     private static final float FLYING_POWER = 9.0f;
@@ -47,7 +47,7 @@ public class Ball extends MapObject {
     };
 
     protected static float[][] edgeInsetRatios = {
-            { 0.1f, 0.1f, -0.1f, 0.1f },
+            { 0.0f, 0.0f, 0.0f, 0.0f },
     };
 
 
@@ -70,8 +70,10 @@ public class Ball extends MapObject {
     }
 
     private void init(float left, float top, Type type) {
-        dstRect.set(left, top, left + width, top + height);
+        dstRect.set(0, top, 0 + width, top + height);
         this.type = type;
+        frameRate = 3.f;
+        movable = true;
     }
 
 
@@ -89,12 +91,13 @@ public class Ball extends MapObject {
 
         if ( movable ) {
             float dx = flyingSpeed * BaseScene.frameTime;
-            frameRate -= BaseScene.frameTime * 2.7f;
+            frameRate -= BaseScene.frameTime * 2.5f;
             flyingSpeed = 9 * frameRate;
             dstRect.offset(dx, 0);
         }
-        if ( dstRect.left >= 12 ) {
+        if ( dstRect.left >= 11 ) {
             movable = false;
+            BaseScene.getTopScene().remove(getLayer(), this);
         }
 
 
@@ -129,6 +132,6 @@ public class Ball extends MapObject {
 
     @Override
     protected MainScene.Layer getLayer() {
-        return MainScene.Layer.coin;
+        return MainScene.Layer.attackBall;
     }
 }

@@ -11,24 +11,50 @@ import kr.ac.tukorea.ge.DontStop.framework.util.CollisionHelper;
 
 public class CollisionChecker implements IGameObject {
     private Player player;
+    private Ball attackBall;
 
     public CollisionChecker(Player player) {
         this.player = player;
     }
+    public CollisionChecker(Ball ball) { this.attackBall = ball; }
 
     @Override
     public void update() {
         MainScene scene = (MainScene) BaseScene.getTopScene();
-        ArrayList<IGameObject> items = scene.getObjectsAt(MainScene.Layer.coin);
-        for (int i = items.size() - 1; i >= 0; i--) {
-            IGameObject gobj = items.get(i);
+        ArrayList<IGameObject> Coinitems = scene.getObjectsAt(MainScene.Layer.coin);
+        for (int i = Coinitems.size() - 1; i >= 0; i--) {
+            IGameObject gobj = Coinitems.get(i);
             if (!(gobj instanceof IBoxCollidable)) {
                 continue;
             }
             if (CollisionHelper.collides(player, (IBoxCollidable) gobj)) {
-                if ( gobj.getClass() == Coin.class) {
+                if (gobj.getClass() == Coin.class) {
                     scene.remove(MainScene.Layer.coin, gobj);
+                    player.SetCoinCount(1);
+                }
+            }
+        }
 
+        ArrayList<IGameObject> obstacles = scene.getObjectsAt(MainScene.Layer.obstacle);
+        ArrayList<IGameObject> balls = scene.getObjectsAt(MainScene.Layer.attackBall);
+        for (int i = obstacles.size() - 1; i >= 0; i--) {
+            IGameObject gobj = obstacles.get(i);
+            if (!(gobj instanceof IBoxCollidable)) {
+                continue;
+            }
+            for (int j = balls.size() - 1; j >= 0; j--) {
+                IGameObject bobj = balls.get(j);
+                if (!(bobj instanceof IBoxCollidable)) {
+                    continue;
+                }
+                if (CollisionHelper.collides((IBoxCollidable) bobj, (IBoxCollidable) gobj)) {
+                    if (gobj.getClass() == Obstacle.class && bobj.getClass() == Ball.class) {
+                        if  ( ((Ball) bobj).type == Ball.Type.SWORD ) {
+                            if ( ((Obstacle) gobj).type == Obstacle.Type.T_THUNDER ) {
+                                scene.remove(MainScene.Layer.obstacle, gobj);
+                            }
+                        }
+                    }
                 }
             }
         }
