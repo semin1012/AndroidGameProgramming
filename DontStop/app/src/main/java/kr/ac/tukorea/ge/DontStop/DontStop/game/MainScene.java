@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import kr.ac.tukorea.ge.DontStop.DontStop.R;
 import kr.ac.tukorea.ge.DontStop.framework.objects.Button;
+import kr.ac.tukorea.ge.DontStop.framework.objects.Score;
+import kr.ac.tukorea.ge.DontStop.framework.objects.Sprite;
 import kr.ac.tukorea.ge.DontStop.framework.scene.BaseScene;
 import kr.ac.tukorea.ge.DontStop.framework.view.Metrics;
 
@@ -12,10 +14,11 @@ public class MainScene extends BaseScene {
     private static final String TAG = MainScene.class.getSimpleName();
     private final Player player;
     private final Button attackBnt;
+    public Score score;
     int playerCharacterNum = 0;
 
     public enum Layer {
-        bg, platform, coin, obstacle, player, ui, touch, controller, item, attackBall, COUNT
+        bg, platform, coin, obstacle, player, ui, touch, controller, item, attackBall, score, COUNT
     }
     public MainScene(Context context, Bundle extras) {
         Metrics.setGameSize(16.0f, 9.0f);
@@ -26,8 +29,9 @@ public class MainScene extends BaseScene {
         add(Layer.bg, new HorzScrollBackground(R.mipmap.dontstop_bg_3, -0.6f));
         add(Layer.bg, new HorzScrollBackground(R.mipmap.dontstop_bg_4, -0.8f));
 
-        // 0 - 전사, 1 - 마법사, 2 - 궁수
 
+
+        // 0 - 전사, 1 - 마법사, 2 - 궁수
         player = new Player();
         add(Layer.player, player);
 
@@ -96,10 +100,36 @@ public class MainScene extends BaseScene {
         add(Layer.controller, new MapLoader(context));
         add(Layer.controller, new CollisionChecker(player));
 
+        score = new Score(R.mipmap.gold_number, 15.5f, 1.0f, 0.8f);
+        add(Layer.ui, score);
     }
     @Override
     protected void onStart() {
        // Sound.playMusic(R.raw.main);
+
+    }
+
+    public void getScoreActivity() {
+
+        add(Layer.score, new HorzScrollBackground(R.mipmap.ovenbreak0006_tm003_bg1, -0.2f));
+        add(Layer.score, new HorzScrollBackground(R.mipmap.ovenbreak0006_tm003_bg2, -0.4f));
+        add(Layer.score, new HorzScrollBackground(R.mipmap.ovenbreak0006_tm003_bg3, -0.6f));
+        add(Layer.score, new HorzScrollBackground(R.mipmap.score_png, -0.0f));
+        score.right = 11.f;
+        score.top = 3.5f;
+        score.dstCharHeight = 2.f;
+        score.dstCharWidth = 2.f;
+        add(Layer.score, score);
+       // add(Layer.score, new Sprite(R.mipmap.score_png, 8.0f, 4.5f, 16, 9));
+        add(Layer.touch, new Button(R.mipmap.attack_button_maple03, 4.5f, 8.1f, 1.7f, 1.7f, false, new Button.Callback() {
+            @Override
+            public boolean onTouch() {
+                player.changeCharacter(Player.Type.ARCHER);
+                attackBnt.setButtonInit();
+                playerCharacterNum = 2;
+                return true;
+            }
+        }));
     }
 
     @Override

@@ -122,7 +122,7 @@ public class Player extends AnimSprite implements IBoxCollidable {
                     ((MapObject) gobj).SPEED = 0;
                 }
                 isDeath = true;
-                scene.finishActivity();
+                scene.changeActivity();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {

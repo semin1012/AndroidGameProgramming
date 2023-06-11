@@ -31,7 +31,7 @@ public class GameView extends View implements Choreographer.FrameCallback {
     //    private Ball ball1, ball2;
     protected Paint fpsPaint;
     protected Paint borderPaint;
-
+    public static MainScene mainScene;
     protected boolean running;
     public Context context;
 

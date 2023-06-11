@@ -30,7 +30,8 @@ public class CollisionChecker implements IGameObject {
             if (CollisionHelper.collides(player, (IBoxCollidable) gobj)) {
                 if (gobj.getClass() == Coin.class) {
                     scene.remove(MainScene.Layer.coin, gobj);
-                    player.SetCoinCount(1);
+                    int score = scene.score.getScore();
+                    scene.score.add(10);
                 }
             }
         }
@@ -52,6 +53,8 @@ public class CollisionChecker implements IGameObject {
                         if  ( ((Ball) bobj).type == Ball.Type.SWORD ) {
                             if ( ((Obstacle) gobj).type == Obstacle.Type.T_THUNDER ) {
                                 scene.remove(MainScene.Layer.obstacle, gobj);
+                                int score = scene.score.getScore();
+                                scene.score.add(50);
                             }
                         }
                     }
