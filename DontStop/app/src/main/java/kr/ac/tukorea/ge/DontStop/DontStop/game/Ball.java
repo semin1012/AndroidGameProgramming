@@ -52,6 +52,7 @@ public class Ball extends MapObject {
 
 
     public Ball() {
+        super(MainScene.Layer.attackBall);
         setBitmapResource(R.mipmap.effect01);
         width = height = 2;
         //setBitmapResource(type.resId());

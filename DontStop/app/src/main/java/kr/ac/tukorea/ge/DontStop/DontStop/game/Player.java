@@ -1,5 +1,6 @@
 package kr.ac.tukorea.ge.DontStop.DontStop.game;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -12,10 +13,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import kr.ac.tukorea.ge.DontStop.DontStop.R;
+import kr.ac.tukorea.ge.DontStop.DontStop.app.MainActivity;
+import kr.ac.tukorea.ge.DontStop.DontStop.app.TitleActivity;
 import kr.ac.tukorea.ge.DontStop.framework.interfaces.IBoxCollidable;
 import kr.ac.tukorea.ge.DontStop.framework.interfaces.IGameObject;
 import kr.ac.tukorea.ge.DontStop.framework.objects.AnimSprite;
 import kr.ac.tukorea.ge.DontStop.framework.scene.BaseScene;
+import kr.ac.tukorea.ge.DontStop.framework.view.GameView;
 import kr.ac.tukorea.ge.DontStop.framework.view.Metrics;
 
 public class Player extends AnimSprite implements IBoxCollidable {
@@ -25,6 +29,7 @@ public class Player extends AnimSprite implements IBoxCollidable {
     private static final float GRAVITY = 17.0f;
     private RectF collisionRect = new RectF();
     public float dy;
+    public Context changeContext;
 
     Handler handler = new Handler();
 
@@ -87,6 +92,7 @@ public class Player extends AnimSprite implements IBoxCollidable {
         return rects;
     }
 
+    boolean isDeath = false;
     @Override
     public void update() {
         fixCollisionRect();
@@ -105,6 +111,25 @@ public class Player extends AnimSprite implements IBoxCollidable {
                 }
             }
             y += dy;
+            // 플레이어가 추락한 경우
+            if ( y >= 15 && !isDeath ) {
+                Log.w("Tag", "Death");
+                MainScene scene = (MainScene) BaseScene.getTopScene();
+                ArrayList<IGameObject> obstacles = scene.getObjectsAt(MainScene.Layer.obstacle);
+                // 다른 오브젝트들이 움직이지 않도록 스피드 조정
+                for (int i = obstacles.size() - 1; i >= 0; i--) {
+                    IGameObject gobj = obstacles.get(i);
+                    ((MapObject) gobj).SPEED = 0;
+                }
+                isDeath = true;
+                scene.finishActivity();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                }, 3000); //딜레이 타임 조절
+            }
             //fixDstRect();
             dstRect.offset(0, dy);
             break;
@@ -148,7 +173,7 @@ public class Player extends AnimSprite implements IBoxCollidable {
 
     private float findNearestPlatformTop(float foot) {
         Platform platform = findNearestPlatform(foot);
-        if (platform == null) return Metrics.game_height;
+        if (platform == null) return 1600;
         return platform.getCollisionRect().top;
     }
 

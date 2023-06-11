@@ -1,6 +1,7 @@
 package kr.ac.tukorea.ge.DontStop.DontStop.game;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import kr.ac.tukorea.ge.DontStop.DontStop.R;
 import kr.ac.tukorea.ge.DontStop.framework.objects.Button;
@@ -16,7 +17,7 @@ public class MainScene extends BaseScene {
     public enum Layer {
         bg, platform, coin, obstacle, player, ui, touch, controller, item, attackBall, COUNT
     }
-    public MainScene(Context context) {
+    public MainScene(Context context, Bundle extras) {
         Metrics.setGameSize(16.0f, 9.0f);
         initLayers(Layer.COUNT);
 
@@ -96,6 +97,25 @@ public class MainScene extends BaseScene {
         add(Layer.controller, new CollisionChecker(player));
 
     }
+    @Override
+    protected void onStart() {
+       // Sound.playMusic(R.raw.main);
+    }
+
+    @Override
+    protected void onEnd() {
+       // Sound.stopMusic();
+    }
+
+    @Override
+    protected void onPause() {
+        //Sound.pauseMusic();
+    }
+
+    @Override
+    protected void onResume() {
+       // Sound.resumeMusic();
+    }
 
 //    @Override
 //    public boolean onTouchEvent(MotionEvent event) {
@@ -108,5 +128,11 @@ public class MainScene extends BaseScene {
     @Override
     protected int getTouchLayerIndex() {
         return Layer.touch.ordinal();
+    }
+
+    @Override
+    public boolean handleBackKey() {
+        new PausedScene().pushScene();
+        return true;
     }
 }

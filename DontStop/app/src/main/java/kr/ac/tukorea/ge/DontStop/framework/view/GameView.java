@@ -1,6 +1,8 @@
 package kr.ac.tukorea.ge.DontStop.framework.view;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,9 +12,13 @@ import android.view.Choreographer;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.security.AccessController;
+import androidx.viewbinding.BuildConfig;
 
-import kr.ac.tukorea.ge.DontStop.DontStop.BuildConfig;
+import java.security.AccessController;
+import java.util.ArrayList;
+
+import kr.ac.tukorea.ge.DontStop.DontStop.game.MainScene;
+import kr.ac.tukorea.ge.DontStop.framework.interfaces.IGameObject;
 import kr.ac.tukorea.ge.DontStop.framework.scene.BaseScene;
 
 /**
@@ -27,9 +33,11 @@ public class GameView extends View implements Choreographer.FrameCallback {
     protected Paint borderPaint;
 
     protected boolean running;
+    public Context context;
 
     public GameView(Context context) {
         super(context);
+        this.context = context;
         init(null, 0);
     }
     public GameView(Context context, AttributeSet attrs) {
@@ -72,14 +80,10 @@ public class GameView extends View implements Choreographer.FrameCallback {
     private long previousNanos;
     @Override
     public void doFrame(long nanos) {
-        if (previousNanos != 0) {
-            long elapsedNanos = nanos - previousNanos;
-            BaseScene scene = BaseScene.getTopScene();
-            if (scene != null) {
-                scene.update(elapsedNanos);
-            }
+        BaseScene scene = BaseScene.getTopScene();
+        if (scene != null) {
+            scene.update(nanos);
         }
-        previousNanos = nanos;
         invalidate();
         if (running) {
             Choreographer.getInstance().postFrameCallback(this);
@@ -111,6 +115,7 @@ public class GameView extends View implements Choreographer.FrameCallback {
         canvas.translate(Metrics.x_offset, Metrics.y_offset);
         canvas.scale(Metrics.scale, Metrics.scale);
         BaseScene scene = BaseScene.getTopScene();
+
         if (scene != null) {
             if (scene.clipsRect()) {
                 canvas.clipRect(0, 0, Metrics.game_width, Metrics.game_height);
@@ -143,6 +148,16 @@ public class GameView extends View implements Choreographer.FrameCallback {
         running = false;
     }
 
+    public Activity getActivity() {
+        Context context = getContext();
+        while (context instanceof ContextWrapper) {
+            if (context instanceof Activity) {
+                return (Activity)context;
+            }
+            context = ((ContextWrapper)context).getBaseContext();
+        }
+        return null;
+    }
     public void resumeGame() {
         if (running) {
             return;
@@ -150,5 +165,10 @@ public class GameView extends View implements Choreographer.FrameCallback {
         previousNanos = 0;
         running = true;
         Choreographer.getInstance().postFrameCallback(this);
+    }
+    public boolean handleBackKey() {
+        BaseScene topScene = BaseScene.getTopScene();
+        if (topScene == null) return false;
+        return topScene.handleBackKey();
     }
 }

@@ -9,7 +9,11 @@ import kr.ac.tukorea.ge.DontStop.framework.scene.BaseScene;
 
 public class MapObject extends Sprite implements IBoxCollidable, IRecyclable {
     private static final String TAG = MapObject.class.getSimpleName();
-    public static final float SPEED = 3.5f;
+    public static float SPEED = 3.5f;
+    protected MainScene.Layer layer;
+    protected MapObject(MainScene.Layer layer) {
+        this.layer = layer;
+    }
     @Override
     public void update() {
         float dx = -SPEED * BaseScene.frameTime;
@@ -18,6 +22,10 @@ public class MapObject extends Sprite implements IBoxCollidable, IRecyclable {
 //            Log.d(TAG, "Removing:" + this);
             BaseScene.getTopScene().remove(getLayer(), this);
         }
+    }
+
+    public void setSpeed(float speed) {
+        SPEED = speed;
     }
 
     protected MainScene.Layer getLayer() {

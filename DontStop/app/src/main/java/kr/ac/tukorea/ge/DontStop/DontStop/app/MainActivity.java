@@ -1,6 +1,8 @@
 package kr.ac.tukorea.ge.DontStop.DontStop.app;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,11 +17,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extras = getIntent().getExtras();
         gameView = new GameView(this);
         gameView.setFullScreen();
         setContentView(gameView);
 
-        new MainScene(this).pushScene();
+        new MainScene(this, extras).pushScene();
     }
 
 
@@ -39,5 +42,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         BaseScene.popAll();
         super.onDestroy();
+    }
+    @Override
+    public void onBackPressed() {
+        if (gameView.handleBackKey()) {
+            return;
+        }
+        super.onBackPressed();
     }
 }

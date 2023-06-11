@@ -5,21 +5,25 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
 import kr.ac.tukorea.ge.DontStop.DontStop.BuildConfig;
+import kr.ac.tukorea.ge.DontStop.DontStop.game.PausedScene;
 import kr.ac.tukorea.ge.DontStop.framework.interfaces.IBoxCollidable;
 import kr.ac.tukorea.ge.DontStop.framework.interfaces.IGameObject;
 import kr.ac.tukorea.ge.DontStop.framework.interfaces.IRecyclable;
 import kr.ac.tukorea.ge.DontStop.framework.interfaces.ITouchable;
+import kr.ac.tukorea.ge.DontStop.framework.view.GameView;
 
 public class BaseScene {
     private static ArrayList<BaseScene> stack = new ArrayList<>();
     public static float frameTime;
     protected static Handler handler = new Handler();
     private static Paint bboxPaint;
+    protected long previousNanos;
 
     public static BaseScene getTopScene() {
         int top = stack.size() - 1;
@@ -34,14 +38,59 @@ public class BaseScene {
         }
     }
 
+    public int changeScene() {
+        BaseScene scene = getTopScene();
+        if (scene != null) {
+            scene.onEnd();
+        }
+        int topIndex = stack.size() - 1;
+        stack.set(topIndex, this);
+        this.onStart();
+        return stack.size();
+    }
+
     public int pushScene() {
+        Log.d("TAG", "push Scene");
+        BaseScene scene = getTopScene();
+        if (scene != null) {
+            scene.onPause();
+        }
         stack.add(this);
+        this.onStart();
         return stack.size();
     }
 
     public void popScene() {
+        this.onEnd();
         stack.remove(this);
+        BaseScene scene = getTopScene();
+        if (scene != null) {
+            scene.resumeScene();
+            return;
+        }
+
+        finishActivity();
         // TODO: additional callback should be called
+    }
+
+    public void finishActivity() {
+        GameView.view.getActivity().finish();
+    }
+
+    public void changeActivity() {
+
+    }
+
+    public void pauseScene() {
+        onPause();
+    }
+    public void resumeScene() {
+        previousNanos = 0;
+        onResume();
+    }
+
+    public boolean isTransparent() {
+        return false;
     }
 
     protected <E extends Enum<E>> void initLayers(E countEnum) {
@@ -95,7 +144,13 @@ public class BaseScene {
         }
         return count;
     }
-    public void update(long elapsedNanos) {
+    public void update(long nanos) {
+        long prev = previousNanos;
+        previousNanos = nanos;
+        if (prev == 0) {
+            return;
+        }
+        long elapsedNanos = nanos - prev;
         frameTime = elapsedNanos / 1_000_000_000f;
         for (ArrayList<IGameObject> objects: layers) {
             for (int i = objects.size() - 1; i >= 0; i--) {
@@ -106,6 +161,15 @@ public class BaseScene {
     }
 
     public void draw(Canvas canvas) {
+        draw(canvas, stack.size() - 1);
+    }
+    protected void draw(Canvas canvas, int index) {
+        BaseScene scene = stack.get(index);
+        if (scene.isTransparent() && index > 0) {
+            draw(canvas, index - 1);
+        }
+
+        ArrayList<ArrayList<IGameObject>> layers = scene.layers;
         for (ArrayList<IGameObject> objects: layers) {
             for (IGameObject gobj : objects) {
                 gobj.draw(canvas);
@@ -148,11 +212,26 @@ public class BaseScene {
         return false;
     }
 
+    protected void onStart() {
+    }
+    protected void onEnd() {
+    }
+    protected void onPause() {
+    }
+    protected void onResume() {
+    }
+
     protected int getTouchLayerIndex() {
         return -1;
     }
 
     public boolean clipsRect() {
+        return true;
+    }
+
+
+    public boolean handleBackKey() {
+        popScene();
         return true;
     }
 }

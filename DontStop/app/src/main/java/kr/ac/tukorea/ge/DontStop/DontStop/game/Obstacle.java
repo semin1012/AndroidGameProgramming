@@ -11,13 +11,14 @@ import java.util.Random;
 
 import kr.ac.tukorea.ge.DontStop.DontStop.R;
 import kr.ac.tukorea.ge.DontStop.framework.scene.RecycleBin;
+import kr.ac.tukorea.ge.DontStop.framework.interfaces.IGameObject;
 
 public class Obstacle extends MapObject {
     protected static final long createdOn = System.currentTimeMillis();;
     protected float fps = 32;
     private static final int SIZE = 66;
     private static final int BORDER = 2;
-    public static final float INSET = 0.03f;
+    public static final float INSET = -0.1f;
     protected RectF collisionRect = new RectF();
     protected static Rect[][] srcRects = {
             makeRects(false, 0, 1, 2, 3, 4, 5, 6, 7),
@@ -45,6 +46,7 @@ public class Obstacle extends MapObject {
     public Type type;
 
     Obstacle() {
+        super(MainScene.Layer.obstacle);
         setBitmapResource(R.mipmap.obstance);
         width = height = 1;
     }
@@ -97,7 +99,7 @@ public class Obstacle extends MapObject {
             else { d = 90; }
             l = l * d;
             int t = (idx / 100) * 150;
-            rects[i] = new Rect(l, t, l + d, t + 150);
+            rects[i] = new Rect(l + 2, t + 2, l + d - 2, t + 150 - 2);
         }
         return rects;
     }
@@ -128,6 +130,6 @@ public class Obstacle extends MapObject {
 
     @Override
     protected MainScene.Layer getLayer() {
-        return MainScene.Layer.coin;
+        return MainScene.Layer.obstacle;
     }
 }
