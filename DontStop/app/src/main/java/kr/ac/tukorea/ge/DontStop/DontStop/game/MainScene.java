@@ -2,6 +2,7 @@ package kr.ac.tukorea.ge.DontStop.DontStop.game;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import kr.ac.tukorea.ge.DontStop.framework.interfaces.IGameObject;
 import kr.ac.tukorea.ge.DontStop.framework.objects.Button;
 import kr.ac.tukorea.ge.DontStop.framework.objects.Score;
 import kr.ac.tukorea.ge.DontStop.framework.objects.Sprite;
+import kr.ac.tukorea.ge.DontStop.framework.res.Sound;
 import kr.ac.tukorea.ge.DontStop.framework.scene.BaseScene;
 import kr.ac.tukorea.ge.DontStop.framework.view.GameView;
 import kr.ac.tukorea.ge.DontStop.framework.view.Metrics;
@@ -22,6 +24,9 @@ public class MainScene extends BaseScene {
     public Score score;
     int playerCharacterNum = 0;
 
+    Handler handler = new Handler();
+
+    Ball ball;
     public enum Layer {
         bg, platform, coin, obstacle, player, ui,  controller, item, attackBall, score, touch, COUNT
     }
@@ -54,6 +59,7 @@ public class MainScene extends BaseScene {
             @Override
             public boolean onTouch() {
                 player.attack();
+                handler.removeCallbacksAndMessages(null);
 
                 MainScene scene = (MainScene) BaseScene.getTopScene();
 
@@ -61,10 +67,26 @@ public class MainScene extends BaseScene {
                 // 플레이어가 현재 sword 라면
                 if ( playerCharacterNum == 0 ) {
                     type = Ball.Type.SWORD;
+                    Log.d(TAG, "Num = 0 ");
+                }
+                else if ( playerCharacterNum == 2 ) {
+                    Log.d(TAG, "Num = 2 ");
+                    type = Ball.Type.ARCHER;
+                }
+                else if ( playerCharacterNum == 1 ) {
+                    type = Ball.Type.WIZARD;
+                    Log.d(TAG, "Num = 1 ");
                 }
 
-                Ball ball = Ball.get(2, player.y, type);
+                ball = Ball.get(2, player.y, type);
                 scene.add(MainScene.Layer.attackBall, ball);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ball = null;
+                    }
+                }, 700); //딜레이 타임 조절
 
                 return true;
             }
@@ -110,11 +132,13 @@ public class MainScene extends BaseScene {
     }
     @Override
     protected void onStart() {
-       // Sound.playMusic(R.raw.main);
+       Sound.playMusic(R.raw.dragon_dream);
 
     }
 
     public void getScoreActivity() {
+        Sound.stopMusic();
+        Sound.playMusic(R.raw.aquarium);
         MainScene scene = (MainScene) BaseScene.getTopScene();
         ArrayList<IGameObject> touchs = scene.getObjectsAt(MainScene.Layer.touch);
         for (int i = touchs.size() - 1; i >= 0; i--) {
@@ -125,7 +149,7 @@ public class MainScene extends BaseScene {
         add(Layer.score, new HorzScrollBackground(R.mipmap.ovenbreak0006_tm003_bg2, -0.4f));
         add(Layer.score, new HorzScrollBackground(R.mipmap.ovenbreak0006_tm003_bg3, -0.6f));
         add(Layer.score, new HorzScrollBackground(R.mipmap.score_png, -0.0f));
-        score.right = 11.f;
+        score.right = 12.f;
         score.top = 3.5f;
         score.dstCharHeight = 2.f;
         score.dstCharWidth = 2.f;
@@ -149,17 +173,17 @@ public class MainScene extends BaseScene {
 
     @Override
     protected void onEnd() {
-       // Sound.stopMusic();
+       Sound.stopMusic();
     }
 
     @Override
     protected void onPause() {
-        //Sound.pauseMusic();
+        Sound.pauseMusic();
     }
 
     @Override
     protected void onResume() {
-       // Sound.resumeMusic();
+        Sound.resumeMusic();
     }
 
 //    @Override

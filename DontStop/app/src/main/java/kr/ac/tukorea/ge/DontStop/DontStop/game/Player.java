@@ -93,6 +93,22 @@ public class Player extends AnimSprite implements IBoxCollidable {
     }
 
     boolean isDeath = false;
+    public void death() {
+        MainScene scene = (MainScene) BaseScene.getTopScene();
+        ArrayList<IGameObject> obstacles = scene.getObjectsAt(MainScene.Layer.obstacle);
+        // 다른 오브젝트들이 움직이지 않도록 스피드 조정
+        for (int i = obstacles.size() - 1; i >= 0; i--) {
+            IGameObject gobj = obstacles.get(i);
+            ((MapObject) gobj).SPEED = 0;
+        }
+        isDeath = true;
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scene.changeActivity();
+            }
+        }, 1000); //딜레이 타임 조절
+    }
     @Override
     public void update() {
         fixCollisionRect();
@@ -113,22 +129,7 @@ public class Player extends AnimSprite implements IBoxCollidable {
             y += dy;
             // 플레이어가 추락한 경우
             if ( y >= 15 && !isDeath ) {
-                Log.w("Tag", "Death");
-                MainScene scene = (MainScene) BaseScene.getTopScene();
-                ArrayList<IGameObject> obstacles = scene.getObjectsAt(MainScene.Layer.obstacle);
-                // 다른 오브젝트들이 움직이지 않도록 스피드 조정
-                for (int i = obstacles.size() - 1; i >= 0; i--) {
-                    IGameObject gobj = obstacles.get(i);
-                    ((MapObject) gobj).SPEED = 0;
-                }
-                isDeath = true;
-                scene.changeActivity();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                }, 3000); //딜레이 타임 조절
+                death();
             }
             //fixDstRect();
             dstRect.offset(0, dy);
@@ -157,6 +158,9 @@ public class Player extends AnimSprite implements IBoxCollidable {
                 }
                 y += dy;
                 dstRect.offset(0, dy);
+                if ( y >= 15 && !isDeath ) {
+                    death();
+                }
             }
             else {
                 foot = collisionRect.bottom;
@@ -164,6 +168,9 @@ public class Player extends AnimSprite implements IBoxCollidable {
                 if (foot < floor) {
                     state = State.falling;
                     jumpSpeed = 0;
+                }
+                if ( y >= 15 && !isDeath ) {
+                    death();
                 }
             }
             break;
@@ -246,9 +253,9 @@ public class Player extends AnimSprite implements IBoxCollidable {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                state = State.doubleJump;
+                state = State.jump;
             }
-        }, 1000); //딜레이 타임 조절
+        }, 500); //딜레이 타임 조절
     }
 
     public void SetCoinCount(int num) {

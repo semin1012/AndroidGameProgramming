@@ -12,6 +12,7 @@ import kr.ac.tukorea.ge.DontStop.DontStop.R;
 import kr.ac.tukorea.ge.DontStop.framework.interfaces.IBoxCollidable;
 import kr.ac.tukorea.ge.DontStop.framework.interfaces.IGameObject;
 import kr.ac.tukorea.ge.DontStop.framework.objects.AnimSprite;
+import kr.ac.tukorea.ge.DontStop.framework.res.Sound;
 import kr.ac.tukorea.ge.DontStop.framework.scene.BaseScene;
 import kr.ac.tukorea.ge.DontStop.framework.scene.RecycleBin;
 import kr.ac.tukorea.ge.DontStop.framework.view.Metrics;
@@ -22,9 +23,11 @@ public class Ball extends MapObject {
     private float flyingSpeed;
     private static final float FLYING_POWER = 9.0f;
     private static final float GRAVITY = 17.0f;
-    protected static final long createdOn = System.currentTimeMillis();;
+    protected long createdOn = System.currentTimeMillis();
     public static final float INSET = 0.03f;
     private RectF collisionRect = new RectF();
+
+    private BaseScene scene = BaseScene.getTopScene();
 
     public enum Type {
         SWORD, WIZARD, ARCHER;
@@ -32,7 +35,8 @@ public class Ball extends MapObject {
 
         static int[] resIds = {
                 R.mipmap.effect01,
-                R.mipmap.effect01,
+                R.mipmap.effect02,
+                R.mipmap.effect04,
         };
     }
 
@@ -43,10 +47,19 @@ public class Ball extends MapObject {
                     200, 201, 202, 203, 204,
                     300, 301, 302, 303, 304,
                     400, 401, 402, 403, 404),
-
+            makeRects(0, 1, 2, 3, 4,
+                    100, 101, 102, 103, 104,
+                    200, 201, 202, 203, 204,
+                    300, 301, 302, 303, 304),
+            makeRects(0, 1, 2, 3, 4,
+                    100, 101, 102, 103, 104,
+                    200, 201, 202, 203, 204,
+                    300, 301, 302, 303, 304),
     };
 
     protected static float[][] edgeInsetRatios = {
+            { 0.0f, 0.0f, 0.0f, 0.0f },
+            { 0.0f, 0.0f, 0.0f, 0.0f },
             { 0.0f, 0.0f, 0.0f, 0.0f },
     };
 
@@ -70,11 +83,14 @@ public class Ball extends MapObject {
         return item;
     }
 
-    private void init(float left, float top, Type type) {
+    public void init(float left, float top, Type type) {
+        createdOn = System.currentTimeMillis();
         dstRect.set(0, top, 0 + width, top + height);
         this.type = type;
+        setBitmapResource(type.resId());
         frameRate = 3.f;
         movable = true;
+        Sound.playEffect(R.raw.fire);
     }
 
 
@@ -98,7 +114,8 @@ public class Ball extends MapObject {
         }
         if ( dstRect.left >= 11 ) {
             movable = false;
-            BaseScene.getTopScene().remove(getLayer(), this);
+            dstRect.offset(-100, 0);
+            //scene.remove(MainScene.Layer.attackBall, this);
         }
 
 
@@ -118,7 +135,7 @@ public class Ball extends MapObject {
     @Override
     public void draw(Canvas canvas) {
         long now = System.currentTimeMillis();
-        Rect[] rects = srcRects[0];
+        Rect[] rects = srcRects[type.ordinal()];
         float time = (now - createdOn) / 1000.0f;
         int frameIndex = Math.round(time * fps) % rects.length;
 
