@@ -2,10 +2,6 @@
 
 ![](C:\Users\이세민\AppData\Roaming\Typora\typora-user-images\image-20230612101225850.png) ![](C:\Users\이세민\AppData\Roaming\Typora\typora-user-images\image-20230612101249195.png)
 
-
-
-
-
 ![](C:\Users\이세민\AppData\Roaming\Typora\typora-user-images\image-20230612101300551.png)
 
 
