@@ -1,11 +1,10 @@
 ![](제목.png)
 
-![](AndroidGameProgramming\그림1.png)
+![](그림.png)
+**게임의 진행**
 
-![](AndroidGameProgramming\그림2.png)
-
-![](AndroidGameProgramming\그림3.png)
-
+![](그림4.png)
+**장애물별로 캐릭터를 다르게 선택하여 공격해야 격파된다.**
 
 
 ***Don't Stop***
