@@ -1,4 +1,4 @@
-![](AndroidGameProgramming\제목.png)
+![](제목.png)
 
 ![](AndroidGameProgramming\그림1.png)
 
